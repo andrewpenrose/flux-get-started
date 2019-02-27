@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "soil-moisture-irl.fullname" . }}
+  labels:
+    release: "{{ .Release.Name }}"
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: soil-moisture-irl
+        image: incubator/soilmoisture:latest
+        imagePullPolicy: Never
+        securityContext:
+          privileged: true
+        env:
+        - name: "app_name"
+          value: {{ .Values.appName }}
+        - name: S3FS_ACCESS_KEY
+          value: 'e1d1c401e127449abc65f1558d8d87c7'
+        - name: S3FS_SECRET_KEY
+          value: 'a595bd70d2530f4614c8d3bd14a61fd527e10c505e20462a'
+        - name: S3FS_URL
+          value: 'https://s3-api.us-geo.objectstorage.softlayer.net/'
+        - name: STAGE_SCRIPT
+          value: 'run_ldt.sh'
+        - name: S3FS_BUCKET
+          value: incubation-soil-moisture-irl

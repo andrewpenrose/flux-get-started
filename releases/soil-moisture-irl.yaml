@@ -1,0 +1,17 @@
+---
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: soil-moisture-irl
+  namespace: flux
+  annotations:
+    flux.weave.works/automated: "false"
+    flux.weave.works/tag.chart-image: glob:0.1.*
+spec:
+  releaseName: soil-moisture
+  chart:
+    git: ssh://git@github.com/apenrose/flux-deploy
+    ref: master
+    path: charts/soil-moisture-irl
+  values:
+    image: incubator/soilmoisture:latest
